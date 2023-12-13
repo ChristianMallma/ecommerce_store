@@ -1,6 +1,6 @@
 from .models import Product, Category
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 def index(request):
@@ -39,3 +39,13 @@ def products_by_name(request):
     }
 
     return render(request, 'index.html', context)
+
+
+def detail_product(request, product_id):
+    product_object = get_object_or_404(Product, pk=product_id)
+
+    context = {
+        "product": product_object
+    }
+
+    return render(request, 'producto.html', context)
