@@ -1,4 +1,5 @@
 from .models import Product, Category
+from .cart import Cart
 
 from django.shortcuts import render, get_object_or_404
 
@@ -49,3 +50,23 @@ def detail_product(request, product_id):
     }
 
     return render(request, 'producto.html', context)
+
+
+# Shopping car
+def shopping_cart(request):
+    return render(request, 'carrito.html')
+
+
+def add_product_to_cart(request, product_id):
+    quantity = 1
+    if request.method == 'POST':
+        quantity = int(request.POST['quantity'])
+
+    product_object = Product.objects.get(pk=product_id)
+
+    shopping_cart_object = Cart(request)
+    shopping_cart_object.add(product=product_object,
+                             quantity=quantity)
+
+    print('LINE 68', request.session.get('cart'))
+    return render(request, 'carrito.html')
